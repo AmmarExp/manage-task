@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Task</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">✅ Manage Task</div>
+    <div class="header-actions">
+      <span id="userEmail" class="user-email"></span>
+      <button id="logoutBtn" class="btn btn-outline" style="display:none">تسجيل الخروج</button>
+    </div>
+  </header>
+
+  <!-- AUTH SECTION -->
+  <section id="authSection" class="auth-section">
+    <div class="auth-card">
+      <h2>مرحباً بك في Manage Task</h2>
+      <p class="subtitle">نظّم مهامك بكل سهولة</p>
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('login')">تسجيل الدخول</button>
+        <button class="tab" onclick="switchTab('register')">إنشاء حساب</button>
+      </div>
+      <form id="loginForm" class="auth-form">
+        <input type="email" id="loginEmail" placeholder="البريد الإلكتروني" required />
+        <input type="password" id="loginPassword" placeholder="كلمة المرور" required />
+        <button type="submit" class="btn btn-primary">دخول</button>
+      </form>
+      <form id="registerForm" class="auth-form" style="display:none">
+        <input type="text" id="regName" placeholder="الاسم الكامل" required />
+        <input type="email" id="regEmail" placeholder="البريد الإلكتروني" required />
+        <input type="password" id="regPassword" placeholder="كلمة المرور (6 أحرف على الأقل)" required />
+        <button type="submit" class="btn btn-primary">إنشاء حساب</button>
+      </form>
+      <p id="authError" class="error-msg"></p>
+    </div>
+  </section>
+
+  <!-- MAIN APP -->
+  <main id="appSection" class="app-section" style="display:none">
+
+    <!-- STATS -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <span class="stat-number" id="totalCount">0</span>
+        <span class="stat-label">إجمالي المهام</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="pendingCount">0</span>
+        <span class="stat-label">قيد التنفيذ</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="doneCount">0</span>
+        <span class="stat-label">مكتملة</span>
+      </div>
+    </div>
+
+    <!-- ADD TASK -->
+    <div class="add-task-card">
+      <h3>➕ إضافة مهمة جديدة</h3>
+      <div class="add-task-form">
+        <input type="text" id="taskTitle" placeholder="عنوان المهمة..." />
+        <textarea id="taskDesc" placeholder="وصف المهمة (اختياري)..."></textarea>
+        <div class="form-row">
+          <select id="taskPriority">
+            <option value="low">🟢 منخفضة</option>
+            <option value="medium" selected>🟡 متوسطة</option>
+            <option value="high">🔴 عالية</option>
+          </select>
+          <input type="date" id="taskDueDate" />
+          <button class="btn btn-primary" onclick="addTask()">إضافة</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterTasks('all', this)">الكل</button>
+      <button class="filter-btn" onclick="filterTasks('pending', this)">قيد التنفيذ</button>
+      <button class="filter-btn" onclick="filterTasks('completed', this)">مكتملة</button>
+      <button class="filter-btn" onclick="filterTasks('high', this)">🔴 عالية الأولوية</button>
+    </div>
+
+    <!-- TASKS LIST -->
+    <div id="tasksList" class="tasks-list">
+      <div class="loading">جاري التحميل...</div>
+    </div>
+
+  </main>
+
+  <script src="supabase-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
